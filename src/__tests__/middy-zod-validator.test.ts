@@ -55,7 +55,7 @@ test('It should reject an incorrect input body', async () => {
         }),
     ).rejects.toStrictEqual({
         message: 'Input Validation Error',
-        statusCode: 422,
+        statusCode: 400,
     });
 });
 
@@ -98,7 +98,7 @@ test('It should reject incorrect input query params', async () => {
         }),
     ).rejects.toStrictEqual({
         message: 'Input Validation Error',
-        statusCode: 422,
+        statusCode: 400,
     });
 });
 
@@ -141,7 +141,7 @@ test('It should reject incorrect path params', async () => {
         }),
     ).rejects.toStrictEqual({
         message: 'Input Validation Error',
-        statusCode: 422,
+        statusCode: 400,
     });
 });
 
@@ -206,7 +206,7 @@ test('It should reject an incorrect output body', async () => {
         }),
     ).rejects.toStrictEqual({
         message: 'Output Validation Error',
-        statusCode: 422,
+        statusCode: 500,
     });
 });
 

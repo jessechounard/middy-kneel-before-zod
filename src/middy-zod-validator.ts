@@ -39,7 +39,7 @@ export function middyZodValidator<
                     config.inputErrorHandler(error);
                 } else {
                     throw {
-                        statusCode: 422,
+                        statusCode: 400,
                         message: 'Input Validation Error',
                     };
                 }
@@ -60,7 +60,7 @@ export function middyZodValidator<
                     config.outputErrorHandler(error);
                 } else {
                     throw {
-                        statusCode: 422,
+                        statusCode: 500,
                         message: 'Output Validation Error',
                     };
                 }
