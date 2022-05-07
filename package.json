@@ -1,6 +1,6 @@
 {
     "name": "middy-kneel-before-zod",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "An input and output validator middleware using Zod for Middy",
     "main": "lib/middy-zod-validator.js",
     "types": "lib/middy-zod-validator.d.ts",
