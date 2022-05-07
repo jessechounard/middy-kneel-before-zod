@@ -25,48 +25,55 @@ export function middyZodValidator<
             pathParameters?: z.infer<InputQueryStringParametersSchema>;
         };
     }): Promise<void> {
-        try {
-            config.inputBodySchema?.parse(request.event.body);
-            config.inputPathParametersSchema?.parse(
+        const processError = (error: z.ZodError) => {
+            if (config.inputErrorHandler) {
+                config.inputErrorHandler(error);
+            } else {
+                throw { statusCode: 400, message: 'Input Validation Error' };
+            }
+        };
+        const bodyResult = config.inputBodySchema?.safeParse(
+            request.event.body,
+        );
+        const pathParametersResult =
+            config.inputPathParametersSchema?.safeParse(
                 request.event.pathParameters,
             );
-            config.inputQueryStringParametersSchema?.parse(
+        const queryStringParametersResult =
+            config.inputQueryStringParametersSchema?.safeParse(
                 request.event.queryStringParameters,
             );
-        } catch (error: unknown) {
-            if (error instanceof z.ZodError) {
-                if (config.inputErrorHandler) {
-                    config.inputErrorHandler(error);
-                } else {
-                    throw {
-                        statusCode: 400,
-                        message: 'Input Validation Error',
-                    };
-                }
-            } else {
-                throw error;
-            }
+
+        if (bodyResult && !bodyResult.success) {
+            processError(bodyResult.error);
+        }
+        if (pathParametersResult && !pathParametersResult.success) {
+            processError(pathParametersResult.error);
+        }
+        if (
+            queryStringParametersResult &&
+            !queryStringParametersResult.success
+        ) {
+            processError(queryStringParametersResult.error);
         }
     }
 
     async function outputValidator(request: {
         response: { body: z.infer<OutputBodySchema> };
     }): Promise<void> {
-        try {
-            config.outputBodySchema?.parse(request.response.body);
-        } catch (error: unknown) {
-            if (error instanceof z.ZodError) {
-                if (config.outputErrorHandler) {
-                    config.outputErrorHandler(error);
-                } else {
-                    throw {
-                        statusCode: 500,
-                        message: 'Output Validation Error',
-                    };
-                }
+        const processError = (error: z.ZodError) => {
+            if (config.outputErrorHandler) {
+                config.outputErrorHandler(error);
             } else {
-                throw error;
+                throw { statusCode: 500, message: 'Output Validation Error' };
             }
+        };
+        const bodyResult = config.outputBodySchema?.safeParse(
+            request.response.body,
+        );
+
+        if (bodyResult && !bodyResult.success) {
+            processError(bodyResult.error);
         }
     }
 
