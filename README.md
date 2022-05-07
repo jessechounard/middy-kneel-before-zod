@@ -10,6 +10,12 @@ When using http request body input, it is recommended that a body parser middlew
 
 Similarly, if using a body output with an API Gateway event, you'll need to make sure that the output is stringified before being sent out. A middleware like [http-response-serializer](https://github.com/middyjs/middy/tree/main/packages/http-response-serializer) works nicely for this. It also needs to be included in the middy `.use` chain before this middleware. (Because the `after` actions are processed in the opposite order of the `before` actions.)
 
+## Installation
+
+```bash
+npm i middy-kneel-before-zod
+```
+
 ## Configuration
 
 The middleware is configured by passing in a configuration object. All of the properties on the configuration object are optional. The properties are:
